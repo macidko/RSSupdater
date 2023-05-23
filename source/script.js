@@ -46,7 +46,11 @@ const main = async () => {
 
   aciklama = await askQuestion('Duyuru Açıklaması Giriniz: ');
 
+  date = await askQuestion('Duyuru Tarihi Giriniz: ');
+
   url = await askQuestion('Duyuru Görseli Linki Giriniz(Yoksa boş bırakınız): ');
+
+  let urlFormat = url.replace(/&/g, '&amp;')
 
 
   rl.close();
@@ -59,28 +63,31 @@ const main = async () => {
     const footer = xml.substring(endIndex);
     const body = xml.substring(startIndex, endIndex);
 
+    
     const item = `
     <item>
-      <title>${baslik}</title>
-      <type>${type}</type>
-      <description>${aciklama}</description>
-      <date>${new Date()}</date>
-      <enclosure>
-        <url>${url}</url>
-      </enclosure>
+    <title>${baslik}</title>
+    <type>${type}</type>
+    <description>${aciklama}</description>
+    <date>${date}</date>
+    <enclosure>
+    <url>${urlFormat}</url>
+    </enclosure>
     </item>
     `;
-
+    
     xml = header + body + item + footer;
-
+    
+    // xml = xml.replace(/&/g, '&amp;')
+    
     fs.writeFileSync('./source/rss.xml', xml); // Değişiklikleri dosyaya kaydet
     // console.log('RSS dosyası başarıyla güncellendi.');
     await uploadFileToFTP(
-      "local_rss_path",
-      "remote_rss_path",
-      "host",
-      "username",
-      "password"
+      "./source/rss.xml",
+      "./public_html/rss.xml",
+      "files.000webhost.com",
+      "seremkoy",
+      "Qwerty123*"
     );
   };
 
