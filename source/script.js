@@ -83,11 +83,11 @@ const main = async () => {
     fs.writeFileSync('./source/rss.xml', xml); // Değişiklikleri dosyaya kaydet
     // console.log('RSS dosyası başarıyla güncellendi.');
     await uploadFileToFTP(
-      "./source/rss.xml",
-      "./public_html/rss.xml",
-      "files.000webhost.com",
-      "seremkoy",
-      "Qwerty123*"
+      "local_rss_file",
+      "remote_rss_file",
+      "host",
+      "username",
+      "password"
     );
   };
 
